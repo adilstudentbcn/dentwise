@@ -1,24 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-      },
-      {
-        protocol: "https",
-        hostname: "avatar.iran.liara.run",
-      },
-      {
-        protocol: "https",
-        hostname: "img.clerk.com",
-      },
-    ],
-    unoptimized: true,
-  },
+  // This tells Turbopack not to try and "bundle" these for the browser
+  serverExternalPackages: ["@prisma/client", "pg"],
 };
 
 export default nextConfig;
