@@ -19,6 +19,14 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "img.clerk.com",
       },
+      {
+        protocol: "https",
+        hostname: "ui-avatars.com", // Add this line if you used UI Avatars
+      },
+      {
+        protocol: "https",
+        hostname: "api.dicebear.com", // Add this line if you used DiceBear
+      }
     ],
     unoptimized: true,
   },
