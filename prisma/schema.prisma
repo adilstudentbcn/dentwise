@@ -86,6 +86,7 @@ model Appointment {
 enum Gender {
   MALE
   FEMALE
+  OTHER
 }
 
 enum AppointmentStatus {
