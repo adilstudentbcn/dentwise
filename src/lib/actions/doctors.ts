@@ -37,10 +37,13 @@ export async function createDoctor(input: CreateDoctorInput) {
   try {
     if (!input.name || !input.email) throw new Error("Name and email are required");
 
+    // Convert Gender enum to the format generateAvatar expects ('MALE' | 'FEMALE')
+    const genderValue = input.gender === Gender.OTHER ? 'MALE' : input.gender;
+
     const doctor = await prisma.doctor.create({
       data: {
         ...input,
-        imageUrl: generateAvatar(input.name, input.gender),
+        imageUrl: generateAvatar(input.name, genderValue as 'MALE' | 'FEMALE'),
       },
     });
 
@@ -88,7 +91,6 @@ export async function updateDoctor(input: UpdateDoctorInput) {
 
     const doctor = await prisma.doctor.update({
       where: { id: input.id },
-      // ...input is going to trigger the unique constraint violation for email
       data: {
         name: input.name,
         email: input.email,
