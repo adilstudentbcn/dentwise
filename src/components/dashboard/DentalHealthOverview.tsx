@@ -5,9 +5,18 @@ import { BrainIcon, MessageSquareIcon } from "lucide-react";
 import { format } from "date-fns";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import { redirect } from "next/navigation"; // Added for safety net
 
 async function DentalHealthOverview() {
-  const appointmentStats = await getUserAppointmentStats();
+  let appointmentStats;
+
+  try {
+    appointmentStats = await getUserAppointmentStats();
+  } catch (error) {
+    // Safety Net: If user is not found in DB, redirect to onboarding/setup
+    redirect("/onboarding"); 
+  }
+
   const user = await currentUser();
 
   return (
@@ -23,19 +32,19 @@ async function DentalHealthOverview() {
         <div className="grid md:grid-cols-3 gap-6">
           <div className="text-center p-4 bg-muted/30 rounded-xl">
             <div className="text-2xl font-bold text-primary mb-1">
-              {appointmentStats.completedAppointments}
+              {appointmentStats?.completedAppointments || 0}
             </div>
             <div className="text-sm text-muted-foreground">Completed Visits</div>
           </div>
           <div className="text-center p-4 bg-muted/30 rounded-xl">
             <div className="text-2xl font-bold text-primary mb-1">
-              {appointmentStats.totalAppointments}
+              {appointmentStats?.totalAppointments || 0}
             </div>
             <div className="text-sm text-muted-foreground">Total Appointments</div>
           </div>
           <div className="text-center p-4 bg-muted/30 rounded-xl">
             <div className="text-2xl font-bold text-primary mb-1">
-              {format(new Date(user?.createdAt!), "MMM yyyy")}
+              {user?.createdAt ? format(new Date(user.createdAt), "MMM yyyy") : "N/A"}
             </div>
             <div className="text-sm text-muted-foreground">Member Since</div>
           </div>
